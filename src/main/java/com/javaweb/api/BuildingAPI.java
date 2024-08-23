@@ -15,7 +15,7 @@ public class BuildingAPI {
     public List<BuildingDTO> getBuilding(@RequestParam(name="name",required = false) String name,
     		                              @RequestParam(name="districtId",required = false) Long district,
     		                              @RequestParam(name="typeCode",required=false) List<String>typeCode) {
-    	List<BuildingDTO> result=buildingService.findAll(name);
+    	List<BuildingDTO> result=buildingService.findAll(name, district);
         return result;
     }
 

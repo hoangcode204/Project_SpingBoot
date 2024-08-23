@@ -18,12 +18,18 @@ public class BuildingRepositoryImpl implements BuildingRepository {
     static final String USER="root";
     static final String PASS="123456";
 	@Override
-	public List<BuildingEntity> findAll(String name) {
-		String sql = "SELECT * FROM building b where name like '%"+name+"%'";
+	public List<BuildingEntity> findAll(String name,Long districtId) {
+		StringBuilder sql = new StringBuilder("SELECT * FROM building b where 1=1");
+		if(name!=null&&!name.equals("")){
+			sql.append("And b.name like'%" +name+"%' ");
+		}
+		if(districtId!=null) {
+			sql.append("and b.districtid ="+districtId+ " ");
+		}
         List<BuildingEntity> result = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+             ResultSet rs = st.executeQuery(sql.toString())) {
              
             while (rs.next()) {
             	BuildingEntity building = new BuildingEntity();
@@ -38,6 +44,11 @@ public class BuildingRepositoryImpl implements BuildingRepository {
             System.out.println("Connected datbase failed...");
         }
         return result;
+	}
+	@Override
+	public void DeleteById(Long id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
