@@ -6,6 +6,6 @@ import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.repository.entity.BuildingEntity;
 public interface BuildingRepository {
 
- List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder);
+ public List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder);
 void DeleteById(Long id);
 }

@@ -17,18 +17,16 @@ import com.javaweb.repository.entity.RentAreaEntity;
 @Component
 public class BuildingDTOConverter {
 	@Autowired
-	private DistrictRepository districtRepository;
-	@Autowired
-	private RentAreaRepository rentAreaRepository;
-	@Autowired
 	private ModelMapper modelMapper;
 	public BuildingDTO toBuildingDTO(BuildingEntity item) {
 		BuildingDTO building=modelMapper.map(item, BuildingDTO.class);
-		DistrictEntity districtEntity=districtRepository.findNameById(item.getDistrict());
-		building.setAddress(item.getStreet()+","+item.getWard()+","+districtEntity.getName());
-		List<RentAreaEntity>rentAreas=rentAreaRepository.getValueByBuildingId(item.getId());
-		String areaResult=rentAreas.stream().map(it->it.getValue().toString()).collect(Collectors.joining(","));
-		building.setRentArea(areaResult);
+		//mapper đối với các th cấu trúc tương đồng 
+		//vd: buildingentity và buildingdto
+		building.setAddress(item.getStreet()+", "+item.getWard()+", "+item.getDistrict().getName());
+		List<RentAreaEntity> rentAreas = item.getRentAreaEntities();
+		//Kh sd được mapper vì ph chuyển từ list->chuỗi
+		String resultArea = rentAreas.stream().map(it->it.getValue().toString()).collect(Collectors.joining(","));
+		building.setRentArea(resultArea);
 		return building;
 	}
 }
