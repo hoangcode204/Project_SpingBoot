@@ -6,6 +6,7 @@ public class BuildingRequestDTO {
 	private String street;
 	private Long district;
 	private Long rentPrice;
+	private Long id;
 	public String getName() {
 		return name;
 	}
@@ -35,6 +36,12 @@ public class BuildingRequestDTO {
 	}
 	public void setRentPrice(Long rentPrice) {
 		this.rentPrice = rentPrice;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	
