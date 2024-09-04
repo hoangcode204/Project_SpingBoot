@@ -7,5 +7,5 @@ import com.javaweb.repository.entity.BuildingEntity;
 public interface BuildingRepository {
 
  List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder);
-void DeleteById(Long id);
+ void DeleteById(Long id);
 }

@@ -13,11 +13,12 @@ public class BuildingSearchBuilder {
 	private List<String> typeCode = new ArrayList<>();
 	private String managerName;
 	private String managerPhoneNumber;
-	private Long rentPriceFrom;
+	private Long rentPriceFrom;  //*từ cột rentPrice
 	private Long rentPriceTo;
 	private Long areaFrom;
 	private Long areaTo;
 	private Long staffId;
+	//Hàm getter
 	public String getName() {
 		return name;
 	}

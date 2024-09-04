@@ -79,6 +79,10 @@ public static void querySpecial(BuildingSearchBuilder buildingSearchBuilder,Stri
 			where.append(" AND r.value<= "+rentAreaTo);			
 		}
 		where.append(") ");
+		           //Loại các tòa nhà có 1 rentArea không thỏa mãn điều kiện.
+//		if (rentAreaFrom != null) {
+//	        where.append(" AND NOT EXISTS (SELECT * FROM rentarea r2 WHERE r2.buildingid = b.id AND r2.value < " + rentAreaFrom + ")");
+//	    }
 }
 	//-------------------
 	Long rentPriceTo=buildingSearchBuilder.getRentPriceTo();
@@ -111,7 +115,7 @@ public static void querySpecial(BuildingSearchBuilder buildingSearchBuilder,Stri
 	@Override
 	public List<BuildingEntity> findAll(BuildingSearchBuilder buildingSearchBuilder) {
 		StringBuilder sql = new StringBuilder("SELECT b.id, b.name, b.district, b.street, b.ward, b.numberofbasement,"
-				+ " b.floorarea, b.rentprice,b.managername, b.managerphone, b.servicefee, b.brokeragefee FROM building b ");
+				+ " b.floorarea, b.rentprice,b.managername, b.managerphonenumber, b.servicefee, b.brokeragefee FROM building b ");
 		joinTable(buildingSearchBuilder, sql);
 		StringBuilder where=new StringBuilder(" Where 1=1");
 		queryNormal(buildingSearchBuilder, where);
@@ -136,7 +140,7 @@ public static void querySpecial(BuildingSearchBuilder buildingSearchBuilder,Stri
             	buildingEntity.setServiceFee(rs.getLong("b.servicefee"));
             	buildingEntity.setBrokerageFee(rs.getLong("b.brokeragefee"));
             	buildingEntity.setManagerName(rs.getString("b.managername"));
-            	buildingEntity.setManagerPhoneNumber(rs.getString("b.managerphone"));
+            	buildingEntity.setManagerPhoneNumber(rs.getString("b.managerphonenumber"));
                 result.add(buildingEntity);
             }
         } catch (Exception e) {

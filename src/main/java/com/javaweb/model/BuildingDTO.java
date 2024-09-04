@@ -3,7 +3,7 @@ package com.javaweb.model;
 public class BuildingDTO {
 private String name;
 private String address;
-private String rentArea;
+private String rentArea;// *có thêm từ bảng khác
 private String managerName;
 private String managerPhoneNumber;
 private Long floorArea;
