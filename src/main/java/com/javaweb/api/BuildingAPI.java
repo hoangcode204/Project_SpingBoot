@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.plaf.ToolBarUI;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -39,46 +37,36 @@ public class BuildingAPI {
 	
 	@Autowired
 	private BuildingRepository buildingRepository;
-//	@PersistenceContext 
-//	   private EntityManager entityManager;
+	@PersistenceContext 
+	 private EntityManager entityManager;
 	
-    @GetMapping(value = "/api/building1/{id}") 
-    public BuildingDTO getBuildingById(@PathVariable Long id){
-    		    BuildingDTO result=new BuildingDTO();
-    		    BuildingEntity building=buildingRepository.findById(id).get();
-    		    return result;
-    	
-    }
-    @PersistenceContext
-    private EntityManager entityManager;
-    @PostMapping(value="/api/building/")
-    public void createBuilding(@RequestBody BuildingRequestDTO buildingRequestDTO) {
-    	  BuildingEntity buildingEntity = new BuildingEntity();
+	@GetMapping(value="/api/building/")
+	public List<BuildingDTO> getBuilding(@RequestParam Map<String,Object> params,
+										 @RequestParam(value="typeCode",required=false) List<String> typeCode){
+		List<BuildingDTO> result= buildingService.findAll(params,typeCode);
+		return result;
+	}
+	
+	@GetMapping(value="/api/building/{name}/{street}")
+	public List<BuildingDTO> getBuildingById(@PathVariable String name,
+			                           @PathVariable String street){
+		List<BuildingDTO> result = new ArrayList<BuildingDTO>();
+	    List<BuildingEntity> buildings = buildingRepository.findByNameContainingAndStreet(name, street);
+	    
+		return result;
+	}
+	  @PostMapping(value="/api/building/")
+	  public void createBuilding(@RequestBody BuildingRequestDTO buildingRequestDTO) {
+		  BuildingEntity buildingEntity = new BuildingEntity();
 		  buildingEntity.setName(buildingRequestDTO.getName());
 		  buildingEntity.setWard(buildingRequestDTO.getWard());
 		  buildingEntity.setStreet(buildingRequestDTO.getStreet());
 		  DistrictEntity districtEntity = new DistrictEntity();
 		  districtEntity.setId(buildingRequestDTO.getDistrict());
 		  buildingEntity.setDistrict(districtEntity);
-		  //Cần một districtEntity để có các ttin như mã, code,name
 		  entityManager.persist(buildingEntity);
-    }
-                           //jpa
-//    @PutMapping(value="/api/building/")
-//	  public void updateBuilding(@RequestBody BuildingRequestDTO buildingRequestDTO) {
-//		  BuildingEntity buildingEntity=new BuildingEntity();
-//		  buildingEntity.setId(1L);
-//		  buildingEntity.setName(buildingRequestDTO.getName());
-//		  buildingEntity.setWard(buildingRequestDTO.getWard());
-//		  buildingEntity.setStreet(buildingRequestDTO.getStreet());
-//		  DistrictEntity districtEntity = new DistrictEntity();
-//		  districtEntity.setId(buildingRequestDTO.getDistrict());
-//		  buildingEntity.setDistrict(districtEntity);
-//		  entityManager.merge(buildingEntity);
-//		  
-//	  }
-     //----------------------------------//
-    @PutMapping(value="/api/building/")
+	  }
+	  @PutMapping(value="/api/building/")
 	  public void updateBuilding(@RequestBody BuildingRequestDTO buildingRequestDTO) {
 		  BuildingEntity buildingEntity=buildingRepository.findById(buildingRequestDTO.getId()).get();
 		  buildingEntity.setName(buildingRequestDTO.getName());
@@ -90,35 +78,12 @@ public class BuildingAPI {
 		  buildingRepository.save(buildingEntity);
 		  
 	  }
-              //---------Dùng Jpa-----------------//
-//    @DeleteMapping(value="/api/building/{id}")
-//    public void deleteBuilding(@PathVariable Long id) {
-//  	  BuildingEntity buildingEntity = entityManager.find(BuildingEntity.class, id);
-//  	  entityManager.remove(buildingEntity);
-//  	  System.out.println("ok");
-//    }
+      @DeleteMapping(value="/api/building/{ids}")
+      public void deleteBuilding(@PathVariable List<Long> ids) {
+    	  buildingRepository.deleteByIdIn(ids);
+    	  System.out.println("ok");
     
-    @DeleteMapping(value="/api/building/{ids}")
-    public void deleteBuilding(@PathVariable List<Long> ids) {
-  	  buildingRepository.deleteByIdIn(ids);
-  	  System.out.println("ok");
-    } 
-    
-    @GetMapping(value="/api/building/{name}")
-    public BuildingDTO getBuildingById(@PathVariable String name) {
-  	  BuildingDTO result=new BuildingDTO();
-  	  List<BuildingEntity> buiding=buildingRepository.findByNameContaining(name);
-  	  return result;
-    } 
-    @GetMapping(value="/api/building/{name}/{street}")
-	public List<BuildingDTO> getBuildingById(@PathVariable String name,
-			                           @PathVariable String street){
-		List<BuildingDTO> result = new ArrayList<BuildingDTO>();
-	    List<BuildingEntity> buildings = buildingRepository.findByNameContainingAndStreet(name, street);
-	    
-		return result;
-	}
-    
+}
 }
 
  

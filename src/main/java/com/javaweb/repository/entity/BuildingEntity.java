@@ -58,7 +58,7 @@ public class BuildingEntity {
 	//join thì bỏ k cần khai báo cột join
 	@ManyToOne
 	@JoinColumn(name = "district")
-	private DistrictEntity district;
+	private DistrictEntity district; //district dòng này phải trùng tên với bên mappedby.
 	
 	@OneToMany(mappedBy="building",fetch=FetchType.LAZY) //tên phải trùng với biến hứng dữ liệu
 	private List<RentAreaEntity> rentAreaEntities=new ArrayList<RentAreaEntity>();
